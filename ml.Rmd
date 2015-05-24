@@ -39,27 +39,49 @@ testing <- testing[, -grep("X|time|window|user_name", names(testing))]
 ```{r echo=TRUE, eval=TRUE}
 # Subset the training data to create additional training and testing data sets
 set.seed(9876)
+<<<<<<< HEAD
 splitIndex <- createDataPartition(y=training$classe, p = .75, list = FALSE, times = 1)
 cv_training <- training[splitIndex,]
 cv_testing <- training[-splitIndex,]
 ```
 The prediction model will be built using the Random Forest method with k fold cross validation on the 75% of the training data set. This validation method will randomly partition the training set into k equal sized subsamples. For this prediction exercise 5 equal sized training subsamples will be used. The k results from the folds will be averaged to produce a single unbiased estimation of accuracy.
+=======
+splitIndex <- createDataPartition(y=training$classe, p = .001, list = FALSE, times = 1)
+cv_training <- training[splitIndex,]
+cv_testing <- training[-splitIndex,]
+```
+The prediction model will be built using the Random Forest method with k fold cross validation on the training data set. This validation method will randomly partition the training set into k equal sized subsamples. For this prediction exercise 5 equal sized training subsamples will be used. The k results from the folds will be averaged to produce a single unbiased estimation of accuracy.
+>>>>>>> 15829459899c2de6f1bc38dd3012befc660d7410
 ```{r echo=TRUE, eval=TRUE}
 # Use Random Forest as the training method to create the prediction model on %75 subset of the training data
 train.control <- trainControl(method = "repeatedcv", number = 5)
 mf <- train(classe~.,data=cv_training, method="rf", trControl = train.control)
+<<<<<<< HEAD
 # Plot the predictors of "classe" in order or relevance
 plot(varImp(mf), main = "Top Variables of Importance")
 # Plot the Random Forest model error
+=======
+# Plot the predictors in order or relevance
+plot(varImp(mf), main = "Variables of Importance")
+# Plot the model error
+>>>>>>> 15829459899c2de6f1bc38dd3012befc660d7410
 plot(mf, main = "Training Model Accuracy")
 ```
 
 ```{r echo=TRUE, eval=TRUE}
+<<<<<<< HEAD
 # Predict outcomes for "classe" based on the testing data set
 predictions <- predict(mf, newdata=cv_testing)
 print(mf)
 ```
 The out-of-sample error rate will now be calculated using the test data set extracted from the training data set. An unbiased estimate of the Random Forest prediction accuracy is generated.  It is expected that the in-sample error rate will be less than the out-of-sample-error rate.
+=======
+# Predict outcomes based on the testing data set
+predictions <- predict(mf, newdata=cv_testing)
+print(mf)
+```
+The out-of-sample error rate will now be calculated using the test data set extracted from the training data set. An unbiased estimate of the Random Forest prediction accuracy is generated.  It is expected that the out-of-sample error rate will be greater than the in-sample-error rate.
+>>>>>>> 15829459899c2de6f1bc38dd3012befc660d7410
 ```{r echo=FALSE, eval=TRUE}
 # Calculate the Out of Sample Error Rate
 outofsample.error <- 1 - (sum(predictions == cv_testing$classe) / length(predictions))
